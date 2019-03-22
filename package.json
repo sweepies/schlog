@@ -1,6 +1,6 @@
 {
   "name": "schlog",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Simple Node.js logger",
   "main": "index.js",
   "repository": "git@github.com:sweepyoface/snlog.git",
