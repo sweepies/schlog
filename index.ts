@@ -8,7 +8,7 @@ export class LogLevel {
     readonly scope: LogScope
 
     /**
-     * 
+     * Create a new log level
      * @param name The name
      * @param color The chalk color (or style)
      * @param priority The priority (the lower the number the higher priority of being output)
@@ -28,152 +28,196 @@ export enum LogScope {
 }
 
 export default class Logger {
-    readonly logLevels: LogLevel[] = [
+    static readonly logLevels: LogLevel[] = [
         new LogLevel("error", chalk.red.bold, 0, LogScope.STDERR),
         new LogLevel("warn", chalk.yellow.bold, 1, LogScope.STDERR),
         new LogLevel("info", chalk.green.bold, 2, LogScope.STDOUT),
         new LogLevel("debug", chalk.blue.bold, 3, LogScope.STDOUT),
     ]
-    readonly defaultLogLevel: LogLevel = this.logLevels[2]
-    private logLevel: any
-    private timeFormat: string = "HH:mm:ss"
-
-    constructor() {
-        if (!process.env.LOG_LEVEL) {
-            // if not set
-            this.logLevel = this.defaultLogLevel
-        } else if (isNaN(parseInt(process.env.LOG_LEVEL))) {
-            // if set but not a number
-            let levelFromName = this.getLogLevelByName(process.env.LOG_LEVEL)
-            // handle invalid level string
-            if (!levelFromName) {
-                this.logLevel = this.defaultLogLevel
-            } else {
-                this.logLevel = levelFromName
-            }
-        } else {
-            // if set as number
-            let levelFromNum = this.getLogLevelByPriority(parseInt(process.env.LOG_LEVEL))
-            // handle invalid level number
-            if (!levelFromNum) {
-                this.logLevel = this.defaultLogLevel
-            } else {
-                this.logLevel = levelFromNum
-            }
-        }
-
-        this.debug("Using log level: " + this.logLevel.name)
-    }
+    static readonly defaultLogLevel: LogLevel = Logger.logLevels[2]
+    private static logLevel: any
+    private static printTimestamps: boolean
+    private static timeFormat: string = "HH:mm:ss"
+    private static printJson: boolean
 
     /**
      * Sets the log level. Defaults to info.
      * @param level The level to set
      */
-    setLogLevel(level: LogLevel) {
+    static setLogLevel(level: LogLevel) {
         this.logLevel = level
+    }
+
+    /**
+     * Gets the current log level.
+     */
+    static getLogLevel() {
+        return this.logLevel
+    }
+
+    /**
+     * Enable or disable printing timestamps.
+     * @param bool True for enabled, false for disabled
+     */
+    static setPrintTimestamps(bool: boolean) {
+        this.printTimestamps = bool
+    }
+
+    /**
+     * Enable or disable JSON printing.
+     * @param format True for enabled, false for disabled
+     */
+    static setPrintJson(bool: boolean) {
+        this.printJson = bool
     }
 
     /**
      * Sets the Moment.js time format. Defaults to "HH:mm:ss".
      * @param format The time format
      */
-    setTimeFormat(format: string) {
+    static setTimeFormat(format: string) {
         this.timeFormat = format
     }
 
     /**
-     * Gets a log level from its name
+     * Gets the current time format.
+     */
+    static getTimeFormat() {
+        return this.timeFormat
+    }
+
+    /**
+     * Finds a log level from its name.
      * @param name The name
      */
-    getLogLevelByName(name: string) {
+    static getLogLevelByName(name: string) {
         return this.logLevels[this.logLevels.findIndex((l: any) => l.name === name)]
     }
 
     /**
-     * Get a log level from its priority
+     * Finds a log level from its priority.
      * @param priority The priority
      */
-    getLogLevelByPriority(priority: number) {
+    static getLogLevelByPriority(priority: number) {
         return this.logLevels[this.logLevels.findIndex((l: any) => l.priority === priority)]
     }
 
     /**
-     * Format a message
+     * Format a message.
      * @param level The log level to format for
      * @param message The message
      */
-    format(level: LogLevel, message: any, notime?: boolean) {
-        let time = moment().format(this.timeFormat)
+    static format(level: LogLevel, message: any) {
         let line = `${level.color(level.name.toUpperCase())} ${message}`
-
-        if (!notime) line = `[${chalk.gray(time)}] ` + line
+        if (this.printTimestamps) {
+            line = `[${chalk.gray(moment().format(this.timeFormat))}] ` + line
+        } 
         return line
     }
 
     /**
-     * Format a message in JSON
+     * Format a message in JSON.
      * @param level The log level to format for
      * @param message The message
      */
-    formatJson(level: LogLevel, message: any) {
-        let time = moment().format("HH:mm:ss")
-        let line = JSON.stringify({ time: time, level: level, message: message })
+    static formatJson(level: LogLevel, message: any) {
+        // we want time to be first in the string
+        let object: any = {}
+        if (this.printTimestamps) {
+            object.time = moment().format(this.timeFormat)
+        }
+        object.level = level
+        object.message = message
+        let line = JSON.stringify(object)
         return line
     }
 
     /**
-     * Log a message
+     * Log a message.
      * @param level The level to log in
      * @param message The message
      */
-    log(level: LogLevel, message: string, json?: boolean) {
+    static log(level: LogLevel, message: string) {
+        //console.log(this.logLevel.priority, "against", level.priority)
         if (this.logLevel.priority >= level.priority) {
-            let line = json ? this.formatJson(level, message) : this.format(level, message)
+            let line = this.printJson ? this.formatJson(level, message) : this.format(level, message)
             level.scope === LogScope.STDERR ? console.error(line) : console.log(line)
             return line
         }
     }
 
     /**
-    * Format a message with the error log level
+    * Format a message with the error log level.
     * @param message The message
     * @param json Whether or not to format in json
     * @returns The log line or nothing if the log level wasn't high enough
     */
-    async error(message: any, json?: boolean): Promise<string | void> {
-        return this.log(this.logLevels[0], message, json)
+    static async error(message: any): Promise<string | void> {
+        return this.log(this.logLevels[0], message)
     }
 
     /**
-     * Format a message with the warn log level
+     * Format a message with the warn log level.
      * @param message The message
      * @param json Whether or not to format in json
      * @returns The log line or nothing if the log level wasn't high enough
      */
-    async warn(message: any, json?: boolean): Promise<string | void> {
-        return this.log(this.logLevels[1], message, json)
+    static async warn(message: any): Promise<string | void> {
+        return this.log(this.logLevels[1], message)
     }
 
     /**
-     * Format a message with the info log level
+     * Format a message with the info log level.
      * @param message The message
      * @param json Whether or not to format in json
      * @returns The log line or nothing if the log level wasn't high enough
      */
-    async info(message: any, json?: boolean): Promise<string | void> {
-        return this.log(this.logLevels[2], message, json)
+    static async info(message: any): Promise<string | void> {
+        return this.log(this.logLevels[2], message)
     }
 
     /**
-     * Format a message with the debug log level
+     * Format a message with the debug log level.
      * @param message The message
      * @param json Whether or not to format in json
      * @returns The log line or nothing if the log level wasn't high enough
      */
-    async debug(message: any, json?: boolean): Promise<string | void> {
-        return this.log(this.logLevels[3], message, json)
+    static async debug(message: any): Promise<string | void> {
+        return this.log(this.logLevels[3], message)
     }
+
 }
+
+// set initial log level
+if (!Logger.getLogLevel()) {
+    if (!process.env.LOG_LEVEL) {
+        // if not set
+        Logger.setLogLevel(Logger.defaultLogLevel)
+    } else if (isNaN(parseInt(process.env.LOG_LEVEL))) {
+        // if set but not a number
+        let levelFromName = Logger.getLogLevelByName(process.env.LOG_LEVEL)
+        // handle invalid level string
+        if (!levelFromName) {
+            Logger.setLogLevel(Logger.defaultLogLevel)
+        } else {
+            Logger.setLogLevel(levelFromName) 
+        }
+    } else {
+        // if set as number
+        let levelFromNum = Logger.getLogLevelByPriority(parseInt(process.env.LOG_LEVEL))
+        // handle invalid level number
+        if (!levelFromNum) {
+            Logger.setLogLevel(Logger.defaultLogLevel)
+        } else {
+            Logger.setLogLevel(levelFromNum)
+        }
+    }
+
+    Logger.debug("Using log level: " + Logger.getLogLevel().name)
+}
+
+
+
 
 
 

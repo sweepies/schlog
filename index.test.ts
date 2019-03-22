@@ -1,28 +1,33 @@
-import Logger from "./index"
+import logger, { LogLevel, LogScope } from "./index"
+import chalk from "chalk"
 
-const log = new Logger() 
 const testOutput = "Test output"
-const level = log.getLogLevelByName("warn")
+const level = logger.getLogLevelByName("warn")
 
-log.setLogLevel(level) // don't use default
+logger.setLogLevel(level) // don't use default
 
 test('test log formatting', () => {
-    expect(log.format(level, testOutput, true)).toBe(`\u001b[33m\u001b[1mWARN\u001b[22m\u001b[39m ${testOutput}`)
+    logger.setPrintTimestamps(false)
+    let result = logger.format(level, testOutput)
+    expect(result).toBe(`\u001b[33m\u001b[1mWARN\u001b[22m\u001b[39m ${testOutput}`)
 })
 
 test('test json formatting', () => {
-    expect(log.formatJson(level, testOutput)).toMatch(new RegExp(`^{"time":".*","level":${JSON.stringify(level)},"message":"${testOutput}"}$`))
+    logger.setPrintTimestamps(true)
+    let result = logger.formatJson(level, testOutput)
+    expect(result).toMatch(new RegExp(`^{"time":".*","level":${JSON.stringify(level)},"message":"${testOutput}"}$`))
 })
 
-test('test log printing', async () => {
-    expect(typeof await log.warn(testOutput)).toBe('string')
-})
-
-test('test json printing', async () => {
-    expect(typeof await log.warn(testOutput, true)).toBe('string')
+test('test printing', async () => {
+    expect(typeof await logger.warn(testOutput)).toBe('string')
 })
 
 test('test higher log level', async () => {
-    expect(await log.info(testOutput)).toBeUndefined()
+    expect(await logger.info(testOutput)).toBeUndefined()
 })
 
+test('test customization', () => {
+    logger.setPrintTimestamps(false)
+    let result = logger.log(new LogLevel("fancy", chalk.magenta.underline, -1, LogScope.STDOUT), testOutput)
+    expect(result).toBe(`${chalk.magenta.underline("FANCY")} ${testOutput}`)
+})

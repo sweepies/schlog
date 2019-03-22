@@ -19,9 +19,7 @@ npm install schlog
 ```
 ## Basic usage
 ```javascript
-const Schlog = require("schlog")
-
-const logger = new Schlog()
+const logger = require("schlog")
 
 logger.setLogLevel(logger.getLogLevelByName("warn"))
 // or set LOG_LEVEL environment variable to any of the default levels
@@ -30,9 +28,6 @@ logger.setLogLevel(logger.getLogLevelByName("warn"))
 
 logger.warn("Test")
 // [21:52:58] WARN Test
-
-logger.warn("Test", true)
-// {"time":"21:52:58","level":{"name":"warn","priority":1,"scope":"stderr"},"message":"Test"}
 
 logger.info("Test")
 // nothing (since level is set to warn)
@@ -46,20 +41,22 @@ Log functions return the same thing they output to the console. Either the log l
 ## Example customization
 ```javascript
 const chalk = require("chalk")
-const Schlog = require("schlog")
-const LogLevel = Schlog.LogLevel
-
-const logger = new Schlog()
+const logger = require("schlog")
+const LogLevel = require("schlog").LogLevel
 
 const logLevel = new LogLevel("fancy", chalk.magenta.underline, 4, LogScope.STDOUT)
-log.setLogLevel(logLevel)
+logger.setLogLevel(logLevel)
 // will only output with levels priorities 4 or lower
 
-log.setTimeFormat("MMMM Do YYYY, h:mm:ss a")
-
-log.log(logLevel, "Test")
+logger.setTimeFormat("MMMM Do YYYY, h:mm:ss a")
+logger.log(logLevel, "Test")
 // [March 21st 2019, 11:53:11 pm] FANCY Test
 
-log.log(logLevel, "Test", true)
+logger.setPrintTimestamps(false)
+logger.log(logLevel, "Test")
+// FANCY Test
+
+logger.setPrintJson(true)
+logger.log(logLevel, "Test")
 // {"time":"21:52:58","level":{"name":"fancy","priority":4,"scope":"stdout"},"message":"Test"}
 ```
