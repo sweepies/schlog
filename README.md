@@ -43,6 +43,7 @@ Log functions return the same thing they output to the console. Either the log l
 const chalk = require("chalk")
 const logger = require("schlog")
 const LogLevel = require("schlog").LogLevel
+const LogScope = require("schlog").LogScope
 
 const logLevel = new LogLevel("fancy", chalk.magenta.underline, 4, LogScope.STDOUT)
 logger.setLogLevel(logLevel)
