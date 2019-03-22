@@ -36,7 +36,7 @@ export default class Logger {
     ]
     static readonly defaultLogLevel: LogLevel = Logger.logLevels[2]
     private static logLevel: any
-    private static printTimestamps: boolean
+    private static printTimestamps: boolean = true
     private static timeFormat: string = "HH:mm:ss"
     private static printJson: boolean
 
