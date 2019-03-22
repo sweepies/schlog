@@ -27,18 +27,42 @@ class Logger {
         new LogLevel("info", chalk.green.bold, 2, LogScope.STDOUT),
         new LogLevel("debug", chalk.blue.bold, 3, LogScope.STDOUT),
     ]
-    readonly logLevel: any
+    readonly defaultLogLevel: LogLevel = this.logLevels[2]
+    private logLevel: any
 
     constructor() {
         if (!process.env.LOG_LEVEL) {
-            this.logLevel = this.getLogLevelByName("info")
-        } else if (isNaN(parseInt(process.env.LOG_LEVEL))) { // is not a number
-            this.logLevel = this.getLogLevelByName(process.env.LOG_LEVEL)
+            // if not set
+            this.logLevel = this.defaultLogLevel
+        } else if (isNaN(parseInt(process.env.LOG_LEVEL))) {
+            // if set but not a number
+            let levelFromName = this.getLogLevelByName(process.env.LOG_LEVEL)
+            // handle invalid level string
+            if (!levelFromName) {
+                this.logLevel = this.defaultLogLevel
+            } else {
+                this.logLevel = levelFromName
+            }
         } else {
-            this.logLevel = this.getLogLevelByPriority(parseInt(process.env.LOG_LEVEL))
+            // if set as number
+            let levelFromNum = this.getLogLevelByPriority(parseInt(process.env.LOG_LEVEL))
+            // handle invalid level number
+            if (!levelFromNum) {
+                this.logLevel = this.defaultLogLevel
+            } else {
+                this.logLevel = levelFromNum
+            }
         }
 
         this.debug("Using log level: " + this.logLevel.name)
+    }
+
+    /**
+     * Sets the log level
+     * @param level The level to set
+     */
+    setLogLevel(level: LogLevel) {
+        this.logLevel = level
     }
 
     /**
@@ -77,7 +101,7 @@ class Logger {
      */
     formatJson(level: LogLevel, message: any) {
         let time = moment().format("HH:mm:ss")
-        let line = JSON.stringify({time: time, level: level, message: message})
+        let line = JSON.stringify({ time: time, level: level, message: message })
         return line
     }
 
