@@ -5,20 +5,27 @@ class LogLevel {
     readonly name: string
     readonly color: Chalk
     readonly priority: number
+    readonly scope: LogScope
 
-    constructor(name: string, color: Chalk, priority: number) {
+    constructor(name: string, color: Chalk, priority: number, scope: LogScope) {
         this.name = name
         this.color = color
         this.priority = priority
+        this.scope = scope
     }
+}
+
+enum LogScope {
+    STDOUT,
+    STDERR
 }
 
 class Logger {
     readonly logLevels: LogLevel[] = [
-        new LogLevel("error", chalk.red.bold, 0),
-        new LogLevel("warn", chalk.yellow.bold, 1),
-        new LogLevel("info", chalk.green.bold, 2),
-        new LogLevel("debug", chalk.blue.bold, 3),
+        new LogLevel("error", chalk.red.bold, 0, LogScope.STDERR),
+        new LogLevel("warn", chalk.yellow.bold, 1, LogScope.STDERR),
+        new LogLevel("info", chalk.green.bold, 2, LogScope.STDOUT),
+        new LogLevel("debug", chalk.blue.bold, 3, LogScope.STDOUT),
     ]
     readonly logLevel: any
 
@@ -63,10 +70,15 @@ class Logger {
         return line
     }
 
+    /**
+     * Log a message
+     * @param level The level to log in
+     * @param message The message
+     */
     log(level: LogLevel, message: string) {
         if (this.logLevel.priority >= level.priority) {
             let line = this.format(level, message)
-            console.info(line)
+            level.scope === LogScope.STDERR ? console.error(line) : console.log(line)
             return line
         }
     }
