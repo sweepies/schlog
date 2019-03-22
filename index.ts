@@ -16,8 +16,8 @@ class LogLevel {
 }
 
 enum LogScope {
-    STDOUT,
-    STDERR
+    STDOUT = "stdout",
+    STDERR = "stderr"
 }
 
 class Logger {
@@ -71,13 +71,24 @@ class Logger {
     }
 
     /**
+     * Format a message in JSON
+     * @param level The log level to format for
+     * @param message The message
+     */
+    formatJson(level: LogLevel, message: any) {
+        let time = moment().format("HH:mm:ss")
+        let line = JSON.stringify({time: time, level: level, message: message})
+        return line
+    }
+
+    /**
      * Log a message
      * @param level The level to log in
      * @param message The message
      */
-    log(level: LogLevel, message: string) {
+    log(level: LogLevel, message: string, json?: boolean) {
         if (this.logLevel.priority >= level.priority) {
-            let line = this.format(level, message)
+            let line = json ? this.formatJson(level, message) : this.format(level, message)
             level.scope === LogScope.STDERR ? console.error(line) : console.log(line)
             return line
         }
@@ -86,38 +97,41 @@ class Logger {
     /**
     * Format a message with the error log level
     * @param message The message
+    * @param json Whether or not to format in json
     * @returns The log line or nothing if the log level wasn't high enough
     */
-    async error(message: any): (Promise<string | void>) {
-        return this.log(this.logLevels[0], message)
+    async error(message: any, json?: boolean): (Promise<string | void>) {
+        return this.log(this.logLevels[0], message, json)
     }
-
 
     /**
      * Format a message with the warn log level
      * @param message The message
+     * @param json Whether or not to format in json
      * @returns The log line or nothing if the log level wasn't high enough
      */
-    async warn(message: any): (Promise<string | void>) {
-        return this.log(this.logLevels[1], message)
+    async warn(message: any, json?: boolean): (Promise<string | void>) {
+        return this.log(this.logLevels[1], message, json)
     }
 
     /**
      * Format a message with the info log level
      * @param message The message
+     * @param json Whether or not to format in json
      * @returns The log line or nothing if the log level wasn't high enough
      */
-    async info(message: any): (Promise<string | void>) {
-        return this.log(this.logLevels[2], message)
+    async info(message: any, json?: boolean): (Promise<string | void>) {
+        return this.log(this.logLevels[2], message, json)
     }
 
     /**
      * Format a message with the debug log level
      * @param message The message
+     * @param json Whether or not to format in json
      * @returns The log line or nothing if the log level wasn't high enough
      */
-    async debug(message: any): (Promise<string | void>) {
-        return this.log(this.logLevels[3], message)
+    async debug(message: any, json?: boolean): (Promise<string | void>) {
+        return this.log(this.logLevels[3], message, json)
     }
 }
 
