@@ -58,9 +58,36 @@ class Logger {
     format(level: LogLevel, message: any, notime?: boolean) {
         let time = moment().format("HH:mm:ss")
         let line = `${level.color(level.name.toUpperCase())} ${message}`
-        
+
         if (!notime) line = `[${chalk.gray(time)}] ` + line
         return line
+    }
+
+    log(level: LogLevel, message: string) {
+        if (this.logLevel.priority >= level.priority) {
+            let line = this.format(level, message)
+            console.info(line)
+            return line
+        }
+    }
+
+    /**
+    * Format a message with the error log level
+    * @param message The message
+    * @returns The log line or nothing if the log level wasn't high enough
+    */
+    async error(message: any): (Promise<string | void>) {
+        return this.log(this.logLevels[0], message)
+    }
+
+
+    /**
+     * Format a message with the warn log level
+     * @param message The message
+     * @returns The log line or nothing if the log level wasn't high enough
+     */
+    async warn(message: any): (Promise<string | void>) {
+        return this.log(this.logLevels[1], message)
     }
 
     /**
@@ -68,41 +95,8 @@ class Logger {
      * @param message The message
      * @returns The log line or nothing if the log level wasn't high enough
      */
-    async info(message: any): (Promise<string|void>) {
-        let level = this.logLevels[2]
-        if (this.logLevel.priority >= level.priority) {
-            let line = this.format(level, message)
-            console.info(line)
-            return line
-        }
-    }
-
-    /**
-     * Format a message with the error log level
-     * @param message The message
-     * @returns The log line or nothing if the log level wasn't high enough
-     */
-    async error(message: any): (Promise<string|void>) {
-        let level = this.logLevels[0]
-        if (this.logLevel.priority >= level.priority) {
-            let line = this.format(level, message)
-            console.info(line)
-            return line
-        }
-    }
-
-    /**
-     * Format a message with the warn log level
-     * @param message The message
-     * @returns The log line or nothing if the log level wasn't high enough
-     */
-    async warn(message: any): (Promise<string|void>) {
-        let level = this.logLevels[1]
-        if (this.logLevel.priority >= level.priority) {
-            let line = this.format(level, message)
-            console.info(line)
-            return line
-        }
+    async info(message: any): (Promise<string | void>) {
+        return this.log(this.logLevels[2], message)
     }
 
     /**
@@ -110,13 +104,8 @@ class Logger {
      * @param message The message
      * @returns The log line or nothing if the log level wasn't high enough
      */
-    async debug(message: any): (Promise<string|void>) {
-        let level = this.logLevels[3]
-        if (this.logLevel.priority >= level.priority) {
-            let line = this.format(level, message)
-            console.info(line)
-            return line
-        }
+    async debug(message: any): (Promise<string | void>) {
+        return this.log(this.logLevels[3], message)
     }
 }
 
