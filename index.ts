@@ -1,5 +1,5 @@
 import chalk, { Chalk } from "chalk"
-import moment from "moment"
+import * as moment from "moment"
 
 export class LogLevel {
     readonly name: string
@@ -140,7 +140,7 @@ export default class Logger {
     * @param json Whether or not to format in json
     * @returns The log line or nothing if the log level wasn't high enough
     */
-    async error(message: any, json?: boolean): (Promise<string | void>) {
+    async error(message: any, json?: boolean): Promise<string | void> {
         return this.log(this.logLevels[0], message, json)
     }
 
@@ -150,7 +150,7 @@ export default class Logger {
      * @param json Whether or not to format in json
      * @returns The log line or nothing if the log level wasn't high enough
      */
-    async warn(message: any, json?: boolean): (Promise<string | void>) {
+    async warn(message: any, json?: boolean): Promise<string | void> {
         return this.log(this.logLevels[1], message, json)
     }
 
@@ -160,7 +160,7 @@ export default class Logger {
      * @param json Whether or not to format in json
      * @returns The log line or nothing if the log level wasn't high enough
      */
-    async info(message: any, json?: boolean): (Promise<string | void>) {
+    async info(message: any, json?: boolean): Promise<string | void> {
         return this.log(this.logLevels[2], message, json)
     }
 
@@ -170,7 +170,7 @@ export default class Logger {
      * @param json Whether or not to format in json
      * @returns The log line or nothing if the log level wasn't high enough
      */
-    async debug(message: any, json?: boolean): (Promise<string | void>) {
+    async debug(message: any, json?: boolean): Promise<string | void> {
         return this.log(this.logLevels[3], message, json)
     }
 }
