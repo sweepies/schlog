@@ -4,7 +4,7 @@
   "description": "Simple Node.js logger",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "repository": "git@github.com:sweepyoface/snlog.git",
+  "repository": "github:sweepyoface/schlog",
   "author": "Sweepyoface <sweepy@sweepy.pw>",
   "license": "MIT",
   "private": false,
