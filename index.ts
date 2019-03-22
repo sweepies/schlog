@@ -1,12 +1,19 @@
 import chalk, { Chalk } from "chalk"
 import moment from "moment"
 
-class LogLevel {
+export class LogLevel {
     readonly name: string
     readonly color: Chalk
     readonly priority: number
     readonly scope: LogScope
 
+    /**
+     * 
+     * @param name The name
+     * @param color The chalk color (or style)
+     * @param priority The priority (the lower the number the higher priority of being output)
+     * @param scope stdout or stderr
+     */
     constructor(name: string, color: Chalk, priority: number, scope: LogScope) {
         this.name = name
         this.color = color
@@ -15,12 +22,12 @@ class LogLevel {
     }
 }
 
-enum LogScope {
+export enum LogScope {
     STDOUT = "stdout",
     STDERR = "stderr"
 }
 
-class Logger {
+export default class Logger {
     readonly logLevels: LogLevel[] = [
         new LogLevel("error", chalk.red.bold, 0, LogScope.STDERR),
         new LogLevel("warn", chalk.yellow.bold, 1, LogScope.STDERR),
@@ -29,6 +36,7 @@ class Logger {
     ]
     readonly defaultLogLevel: LogLevel = this.logLevels[2]
     private logLevel: any
+    private timeFormat: string = "HH:mm:ss"
 
     constructor() {
         if (!process.env.LOG_LEVEL) {
@@ -58,11 +66,19 @@ class Logger {
     }
 
     /**
-     * Sets the log level
+     * Sets the log level. Defaults to info.
      * @param level The level to set
      */
     setLogLevel(level: LogLevel) {
         this.logLevel = level
+    }
+
+    /**
+     * Sets the Moment.js time format. Defaults to "HH:mm:ss".
+     * @param format The time format
+     */
+    setTimeFormat(format: string) {
+        this.timeFormat = format
     }
 
     /**
@@ -87,7 +103,7 @@ class Logger {
      * @param message The message
      */
     format(level: LogLevel, message: any, notime?: boolean) {
-        let time = moment().format("HH:mm:ss")
+        let time = moment().format(this.timeFormat)
         let line = `${level.color(level.name.toUpperCase())} ${message}`
 
         if (!notime) line = `[${chalk.gray(time)}] ` + line
@@ -158,8 +174,6 @@ class Logger {
         return this.log(this.logLevels[3], message, json)
     }
 }
-
-export default new Logger()
 
 
 
