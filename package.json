@@ -1,7 +1,7 @@
 {
-  "name": "schlog-temp",
-  "version": "0.2.1",
-  "description": "Simple Node.js logger - temp location",
+  "name": "schlog",
+  "version": "0.3.0",
+  "description": "Simple Node.js logger",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "github:sweepyoface/schlog",
