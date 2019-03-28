@@ -1,9 +1,9 @@
 # Schlog
 Simple Node.js logger
 
-![GitHub](https://img.shields.io/github/license/sweepyoface/schlog.svg)
-![npm](https://img.shields.io/npm/v/schlog.svg)
-![Travis (.com)](https://img.shields.io/travis/com/sweepyoface/schlog.svg)
+[![GitHub](https://img.shields.io/github/license/sweepyoface/schlog.svg)](https://github.com/sweepyoface/schlog/blob/master/LICENSE)
+[![npm](https://img.shields.io/npm/v/schlog.svg)](https://www.npmjs.com/package/schlog)
+[![Travis (.com)](https://img.shields.io/travis/com/sweepyoface/schlog.svg)](https://travis-ci.com/sweepyoface/schlog)
 
 ## Installation
 Install using [yarn](https://yarnpkg.com/en/package/jest):
