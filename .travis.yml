@@ -4,7 +4,9 @@ node_js:
   - 'lts/*'
 
 install:
-  - 'yarn'
+  - 'npm install'
 
 before_script:
-  - 'yarn run build'
+  - 'npm run build'
+
+script: 'npm run test'
