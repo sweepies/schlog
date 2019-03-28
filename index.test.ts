@@ -1,4 +1,4 @@
-import logger, { LogLevel, LogScope } from "./index"
+import { Logger as logger, LogLevel, LogScope } from "./index"
 import chalk from "chalk"
 
 const testOutput = "Test output"

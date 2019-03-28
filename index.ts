@@ -27,7 +27,7 @@ export enum LogScope {
     STDERR = "stderr"
 }
 
-export default class Logger {
+export class Logger {
     static readonly logLevels: LogLevel[] = [
         new LogLevel("error", chalk.red.bold, 0, LogScope.STDERR),
         new LogLevel("warn", chalk.yellow.bold, 1, LogScope.STDERR),

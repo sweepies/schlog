@@ -19,7 +19,7 @@ npm install schlog
 ```
 ## Basic usage
 ```javascript
-const logger = require("schlog")
+const logger = require("schlog").Logger
 
 logger.setLogLevel(logger.getLogLevelByName("warn"))
 // or set LOG_LEVEL environment variable to any of the default levels
@@ -41,9 +41,11 @@ Log functions return the same thing they output to the console. Either the log l
 ## Example customization
 ```javascript
 const chalk = require("chalk")
-const logger = require("schlog")
-const LogLevel = require("schlog").LogLevel
-const LogScope = require("schlog").LogScope
+const schlog = require("schlog")
+
+const logger = schlog.Logger
+const LogLevel = schlog.LogLevel
+const LogScope = schlog.LogScope
 
 const logLevel = new LogLevel("fancy", chalk.magenta.underline, 4, LogScope.STDOUT)
 logger.setLogLevel(logLevel)
@@ -59,5 +61,5 @@ logger.log(logLevel, "Test")
 
 logger.setPrintJson(true)
 logger.log(logLevel, "Test")
-// {"time":"21:52:58","level":{"name":"fancy","priority":4,"scope":"stdout"},"message":"Test"}
+// {"level":{"name":"fancy","priority":4,"scope":"stdout"},"message":"Test"}
 ```
