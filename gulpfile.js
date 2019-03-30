@@ -1,5 +1,5 @@
 const gulp = require("gulp")
-const typescript = require("gulp-typescript")
+const typescript = require("gulp-typescript").createProject("tsconfig.json")
 const clean = require("gulp-clean")
 
 const srcDir = "src/"
@@ -14,11 +14,11 @@ gulp.task("clean", function() {
     .pipe(clean())
 })
 
-gulp.task("typescript", function() {
+gulp.task("compile", function() {
   return gulp
-    .src(`${srcDir}/**/*.ts`)
+    .src(`${srcDir}/**/*.{ts,js}`)
     .pipe(typescript())
     .pipe(gulp.dest(outDir))
 })
 
-gulp.task("default", gulp.series("clean", "typescript"))
+gulp.task("default", gulp.series("clean", "compile"))
