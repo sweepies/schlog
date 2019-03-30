@@ -1,8 +1,8 @@
 {
+    "extends": [
+        "tslint:recommended"
+    ],
     "rules": {
-        "extends": [
-            "tslint:recommended"
-        ],
         "ordered-imports": [
             true,
             {
@@ -16,8 +16,24 @@
         "max-line-length": [
             true,
             120
-          ],
+        ],
         "quotemark": true
-
+    },
+    "jsRules": {
+        "ordered-imports": [
+            true,
+            {
+                "grouped-imports": true
+            }
+        ],
+        "semicolon": [
+            true,
+            "never"
+        ],
+        "max-line-length": [
+            true,
+            120
+        ],
+        "quotemark": true
     }
 }

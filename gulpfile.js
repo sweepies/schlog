@@ -4,16 +4,16 @@ const clean = require("gulp-clean")
 
 const outDir = "dist/"
 
-gulp.task("clean", function () {
+gulp.task("clean", function() {
   return gulp
     .src(outDir, {
+      allowEmpty: true,
       read: false,
-      allowEmpty: true
     })
     .pipe(clean())
 })
 
-gulp.task("typescript", function () {
+gulp.task("typescript", function() {
   return gulp
     .src("*.ts")
     .pipe(typescript())

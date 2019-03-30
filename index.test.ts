@@ -9,13 +9,13 @@ logger.setLogLevel(level) // don't use default
 
 test("test log formatting", () => {
     logger.setPrintTimestamps(false)
-    let result = logger.format(level, testOutput)
+    const result = logger.format(level, testOutput)
     expect(result).toBe(`\u001b[33m\u001b[1mWARN\u001b[22m\u001b[39m ${testOutput}`)
 })
 
 test("test json formatting", () => {
     logger.setPrintTimestamps(true)
-    let result = logger.formatJson(level, testOutput)
+    const result = logger.formatJson(level, testOutput)
     expect(result).toMatch(new RegExp(`^{"time":".*","level":${JSON.stringify(level)},"message":"${testOutput}"}$`))
 })
 
@@ -29,6 +29,6 @@ test("test higher log level", async () => {
 
 test("test customization", () => {
     logger.setPrintTimestamps(false)
-    let result = logger.log(new LogLevel("fancy", chalk.magenta.underline, -1, LogScope.STDOUT), testOutput)
+    const result = logger.log(new LogLevel("fancy", chalk.magenta.underline, -1, LogScope.STDOUT), testOutput)
     expect(result).toBe(`${chalk.magenta.underline("FANCY")} ${testOutput}`)
 })
