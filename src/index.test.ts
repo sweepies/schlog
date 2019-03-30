@@ -1,6 +1,8 @@
 import chalk from "chalk"
 
-import { Logger as logger, LogLevel, LogScope } from "./index"
+import { Logger as logger } from "./index"
+import LogLevel from "./lib/LogLevel"
+import { LogScope } from "./lib/LogScope"
 
 const testOutput = "Test output"
 const level = logger.getLogLevelByName("warn")

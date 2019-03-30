@@ -2,6 +2,7 @@ const gulp = require("gulp")
 const typescript = require("gulp-typescript")
 const clean = require("gulp-clean")
 
+const srcDir = "src/"
 const outDir = "dist/"
 
 gulp.task("clean", function() {
@@ -15,7 +16,7 @@ gulp.task("clean", function() {
 
 gulp.task("typescript", function() {
   return gulp
-    .src("*.ts")
+    .src(`${srcDir}/**/*.ts`)
     .pipe(typescript())
     .pipe(gulp.dest(outDir))
 })
