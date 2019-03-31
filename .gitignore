@@ -245,3 +245,4 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/visualstudiocode,node,windows,linux,macos,webstorm
 
 dist/
+coverage/
