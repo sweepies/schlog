@@ -1,9 +1,9 @@
-const gulp = require("gulp")
-const typescript = require("gulp-typescript").createProject("tsconfig.json")
-const clean = require("gulp-clean")
+const gulp = require("gulp");
+const typescript = require("gulp-typescript").createProject("tsconfig.json");
+const clean = require("gulp-clean");
 
-const srcDir = "src/"
-const outDir = "dist/"
+const srcDir = "src/";
+const outDir = "dist/";
 
 gulp.task("clean", function() {
   return gulp
@@ -11,14 +11,14 @@ gulp.task("clean", function() {
       allowEmpty: true,
       read: false,
     })
-    .pipe(clean())
-})
+    .pipe(clean());
+});
 
 gulp.task("compile", function() {
   return gulp
     .src(`${srcDir}/**/*.{ts,js}`)
     .pipe(typescript())
-    .pipe(gulp.dest(outDir))
-})
+    .pipe(gulp.dest(outDir));
+});
 
-gulp.task("default", gulp.series("clean", "compile"))
+gulp.task("default", gulp.series("clean", "compile"));
