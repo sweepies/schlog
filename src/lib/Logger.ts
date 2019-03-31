@@ -57,7 +57,7 @@ export class Logger {
 
     /**
      * Enable or disable JSON printing
-     * @param format True for enabled, false for disabled
+     * @param bool True for enabled, false for disabled
      */
     public static setPrintJson(bool: boolean) {
         this.printJson = bool
