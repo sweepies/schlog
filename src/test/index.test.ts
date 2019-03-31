@@ -12,7 +12,7 @@ logger.setLogLevel(level) // don't use default
 test("test formatting", () => {
     logger.setPrintTimestamps(false)
     const result = logger.format(level, testOutput)
-    expect(result).toBe(`\u001b[33m\u001b[1mWARN\u001b[22m\u001b[39m ${testOutput}`)
+    expect(result).toBe(`${logger.getLogLevel().getColor()(level.getName().toUpperCase())} ${testOutput}`)
 })
 
 test("test json formatting", () => {
