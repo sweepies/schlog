@@ -21,4 +21,32 @@ export default class LogLevel {
         this.priority = priority
         this.scope = scope
     }
+
+    /**
+     * Get the name
+     */
+    public getName() {
+        return this.name
+    }
+
+    /**
+     * Get the color
+     */
+    public getColor() {
+        return this.color
+    }
+
+    /**
+     * Get the priority
+     */
+    public getPriority() {
+        return this.priority
+    }
+
+    /**
+     * Get the scope
+     */
+    public getScope() {
+        return this.scope
+    }
 }

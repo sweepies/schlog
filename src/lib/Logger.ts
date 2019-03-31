@@ -6,16 +6,27 @@ import LogLevel from "./LogLevel"
 import { LogScope } from "./LogScope"
 
 export class Logger {
-    public static readonly logLevels: LogLevel[] = [
+    private static readonly logLevels: LogLevel[] = [
         new LogLevel("error", chalk.red.bold, 0, LogScope.STDERR),
         new LogLevel("warn", chalk.yellow.bold, 1, LogScope.STDERR),
         new LogLevel("info", chalk.green.bold, 2, LogScope.STDOUT),
         new LogLevel("debug", chalk.blue.bold, 3, LogScope.STDOUT),
     ]
-    public static readonly defaultLogLevel: LogLevel = Logger.logLevels[2]
+    private static readonly defaultLogLevel: LogLevel = Logger.logLevels[2]
+    private static logLevel: LogLevel
+    private static printTimestamps: boolean = true
+    private static timeFormat: string = "HH:mm:ss"
+    private static printJson: boolean
 
     /**
-     * Sets the log level. Defaults to info.
+     * Get the default log level
+     */
+    public static getDefaultLogLevel() {
+        return this.defaultLogLevel
+    }
+
+    /**
+     * Set the log level
      * @param level The level to set
      */
     public static setLogLevel(level: LogLevel) {
@@ -23,14 +34,14 @@ export class Logger {
     }
 
     /**
-     * Gets the current log level.
+     * Get the current log level
      */
     public static getLogLevel() {
         return this.logLevel
     }
 
     /**
-     * Enable or disable printing timestamps.
+     * Enable or disable printing timestamps
      * @param bool True for enabled, false for disabled
      */
     public static setPrintTimestamps(bool: boolean) {
@@ -38,7 +49,7 @@ export class Logger {
     }
 
     /**
-     * Enable or disable JSON printing.
+     * Enable or disable JSON printing
      * @param format True for enabled, false for disabled
      */
     public static setPrintJson(bool: boolean) {
@@ -54,14 +65,14 @@ export class Logger {
     }
 
     /**
-     * Gets the current time format.
+     * Get the current time format
      */
     public static getTimeFormat() {
         return this.timeFormat
     }
 
     /**
-     * Finds a log level from its name.
+     * Find a log level from its name
      * @param name The name
      */
     public static getLogLevelByName(name: string) {
@@ -69,7 +80,7 @@ export class Logger {
     }
 
     /**
-     * Finds a log level from its priority.
+     * Find a log level from its priority
      * @param priority The priority
      */
     public static getLogLevelByPriority(priority: number) {
@@ -77,7 +88,7 @@ export class Logger {
     }
 
     /**
-     * Format a message.
+     * Format a message
      * @param level The log level to format for
      * @param message The message
      */
@@ -90,7 +101,7 @@ export class Logger {
     }
 
     /**
-     * Format a message in JSON.
+     * Format a message in JSON
      * @param level The log level to format for
      * @param message The message
      */
@@ -107,7 +118,7 @@ export class Logger {
     }
 
     /**
-     * Log a message.
+     * Log a message
      * @param level The level to log in
      * @param message The message
      */
@@ -121,7 +132,7 @@ export class Logger {
     }
 
     /**
-     * Format a message with the error log level.
+     * Format a message with the error log level
      * @param message The message
      * @param json Whether or not to format in json
      * @returns The log line (without newline) or nothing if the log level wasn't high enough
@@ -131,7 +142,7 @@ export class Logger {
     }
 
     /**
-     * Format a message with the warn log level.
+     * Format a message with the warn log level
      * @param message The message
      * @param json Whether or not to format in json
      * @returns The log line (without newline) or nothing if the log level wasn't high enough
@@ -141,7 +152,7 @@ export class Logger {
     }
 
     /**
-     * Format a message with the info log level.
+     * Format a message with the info log level
      * @param message The message
      * @param json Whether or not to format in json
      * @returns The log line or nothing if the log level wasn't high enough
@@ -151,7 +162,7 @@ export class Logger {
     }
 
     /**
-     * Format a message with the debug log level.
+     * Format a message with the debug log level
      * @param message The message
      * @param json Whether or not to format in json
      * @returns The log line or nothing if the log level wasn't high enough
@@ -159,10 +170,6 @@ export class Logger {
     public static async debug(message: any): Promise<string | void> {
         return this.log(this.logLevels[3], message)
     }
-    private static logLevel: any
-    private static printTimestamps: boolean = true
-    private static timeFormat: string = "HH:mm:ss"
-    private static printJson: boolean
 
 }
 
@@ -170,13 +177,13 @@ export class Logger {
 if (!Logger.getLogLevel()) {
     if (!process.env.LOG_LEVEL) {
         // if not set
-        Logger.setLogLevel(Logger.defaultLogLevel)
+        Logger.setLogLevel(Logger.getDefaultLogLevel())
     } else if (isNaN(parseInt(process.env.LOG_LEVEL, 10))) {
         // if set but not a number
         const levelFromName = Logger.getLogLevelByName(process.env.LOG_LEVEL)
         // handle invalid level string
         if (!levelFromName) {
-            Logger.setLogLevel(Logger.defaultLogLevel)
+            Logger.setLogLevel(Logger.getDefaultLogLevel())
         } else {
             Logger.setLogLevel(levelFromName)
         }
@@ -185,7 +192,7 @@ if (!Logger.getLogLevel()) {
         const levelFromNum = Logger.getLogLevelByPriority(parseInt(process.env.LOG_LEVEL, 10))
         // handle invalid level number
         if (!levelFromNum) {
-            Logger.setLogLevel(Logger.defaultLogLevel)
+            Logger.setLogLevel(Logger.getDefaultLogLevel())
         } else {
             Logger.setLogLevel(levelFromNum)
         }

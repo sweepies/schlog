@@ -17,7 +17,8 @@
             true,
             120
         ],
-        "quotemark": true
+        "quotemark": true,
+        "member-ordering": false
     },
     "jsRules": {
         "ordered-imports": [
