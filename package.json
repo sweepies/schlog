@@ -19,6 +19,7 @@
     "gulp-clean": "^0.4.0",
     "gulp-typescript": "^5.0.1",
     "jest": "^24.5.0",
+    "strip-ansi": "^5.2.0",
     "ts-jest": "^24.0.1",
     "tslint": "^5.14.0",
     "typescript": "^3.3.4000"
