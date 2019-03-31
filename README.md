@@ -1,9 +1,11 @@
 # Schlog
 Simple Node.js logger
 
-[![GitHub](https://img.shields.io/github/license/sweepyoface/schlog.svg)](https://github.com/sweepyoface/schlog/blob/master/LICENSE)
-[![npm](https://img.shields.io/npm/v/schlog.svg)](https://www.npmjs.com/package/schlog)
-[![Travis (.com)](https://img.shields.io/travis/com/sweepyoface/schlog.svg)](https://travis-ci.com/sweepyoface/schlog)
+[![GitHub](https://img.shields.io/github/license/sweepyoface/schlog.svg?logo=github)](https://github.com/sweepyoface/schlog/blob/master/LICENSE)
+[![npm](https://img.shields.io/npm/v/schlog.svg?logo=npm)](https://www.npmjs.com/package/schlog)
+[![Travis (.com)](https://img.shields.io/travis/com/sweepyoface/schlog.svg?logo=travis)](https://travis-ci.com/sweepyoface/schlog)
+[![Codacy branch grade](https://img.shields.io/codacy/grade/cd83f435087041ccb72ca9be1a0cf9dc/master.svg?logo=codacy)](https://www.codacy.com/app/sweepyoface/schlog?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sweepyoface/schlog&amp;utm_campaign=Badge_Grade)
+[![Codacy branch coverage](https://img.shields.io/codacy/coverage/cd83f435087041ccb72ca9be1a0cf9dc/master.svg?logo=codacy)](https://www.codacy.com/app/sweepyoface/schlog?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sweepyoface/schlog&amp;utm_campaign=Badge_Coverage)
 
 ## Installation
 Install using [yarn](https://yarnpkg.com/en/package/jest):
