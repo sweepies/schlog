@@ -4,13 +4,10 @@ node_js:
   - lts/*
 
 install:
-  - npm install
-  - npm install codecov -g
+  - yarn
+  - yarn global add codecov
 
-before_script:
-  - npm run build
-
-script: npm run test
+script: yarn test
 
 after_success:
   - codecov
