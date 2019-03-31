@@ -3,10 +3,10 @@ import { Chalk } from "chalk"
 import { LogScope } from "./LogScope"
 
 export default class LogLevel {
-    public readonly name: string
-    public readonly color: Chalk
-    public readonly priority: number
-    public readonly scope: LogScope
+    private readonly name: string
+    private readonly color: Chalk
+    private readonly priority: number
+    private readonly scope: LogScope
 
     /**
      * Create a new log level

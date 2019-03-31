@@ -19,6 +19,13 @@ export class Logger {
     private static printJson: boolean
 
     /**
+     * Get all of the defined log levels
+     */
+    public static getLogLevels() {
+        return this.logLevels
+    }
+
+    /**
      * Get the default log level
      */
     public static getDefaultLogLevel() {
@@ -93,7 +100,7 @@ export class Logger {
      * @param message The message
      */
     public static format(level: LogLevel, message: any) {
-        let line = `${level.color(level.name.toUpperCase())} ${message}`
+        let line = `${level.getColor()(level.getName().toUpperCase())} ${message}`
         if (this.printTimestamps) {
             line = `[${chalk.gray(moment().format(this.timeFormat))}] ` + line
         }
@@ -124,9 +131,9 @@ export class Logger {
      */
     public static log(level: LogLevel, message: string) {
         // console.log(this.logLevel.priority, "against", level.priority)
-        if (this.logLevel.priority >= level.priority) {
+        if (this.logLevel.getPriority() >= level.getPriority()) {
             const line = this.printJson ? this.formatJson(level, message) : this.format(level, message)
-            level.scope === LogScope.STDERR ? process.stderr.write(line + EOL) : process.stdout.write(line + EOL)
+            level.getScope() === LogScope.STDERR ? process.stderr.write(line + EOL) : process.stdout.write(line + EOL)
             return line
         }
     }
@@ -173,30 +180,21 @@ export class Logger {
 
 }
 
-// set initial log level
-if (!Logger.getLogLevel()) {
-    if (!process.env.LOG_LEVEL) {
-        // if not set
-        Logger.setLogLevel(Logger.getDefaultLogLevel())
-    } else if (isNaN(parseInt(process.env.LOG_LEVEL, 10))) {
-        // if set but not a number
-        const levelFromName = Logger.getLogLevelByName(process.env.LOG_LEVEL)
-        // handle invalid level string
-        if (!levelFromName) {
+// set level from env
+if (process.env.LOG_LEVEL === undefined) {
+    Logger.setLogLevel(Logger.getDefaultLogLevel())
+} else {
+    const fromName = Logger.getLogLevelByName(process.env.LOG_LEVEL)
+    if (fromName === undefined) {
+        const fromInt = Logger.getLogLevelByPriority(parseInt(process.env.LOG_LEVEL, 10))
+        if (fromInt === undefined) {
             Logger.setLogLevel(Logger.getDefaultLogLevel())
         } else {
-            Logger.setLogLevel(levelFromName)
+            Logger.setLogLevel(fromInt)
         }
     } else {
-        // if set as number
-        const levelFromNum = Logger.getLogLevelByPriority(parseInt(process.env.LOG_LEVEL, 10))
-        // handle invalid level number
-        if (!levelFromNum) {
-            Logger.setLogLevel(Logger.getDefaultLogLevel())
-        } else {
-            Logger.setLogLevel(levelFromNum)
-        }
+        Logger.setLogLevel(fromName)
     }
-
-    Logger.debug("Using log level: " + Logger.getLogLevel().name)
 }
+
+Logger.debug("Using log level: " + Logger.getLogLevel().getName())
