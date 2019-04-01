@@ -2,6 +2,7 @@ const testOutput = "Test output"
 
 test("test unset env var", () => {
     jest.resetModules()
+    process.env.LOG_LEVEL = undefined
     const logger = require("../index").Logger
 
     expect(logger.getLogLevel()).toBe(logger.getDefaultLogLevel())
