@@ -6,6 +6,7 @@ Simple Node.js logger
 [![Travis (.com)](https://img.shields.io/travis/com/sweepyoface/schlog.svg?logo=travis)](https://travis-ci.com/sweepyoface/schlog)
 [![Codacy branch grade](https://img.shields.io/codacy/grade/cd83f435087041ccb72ca9be1a0cf9dc/master.svg?logo=codacy)](https://www.codacy.com/app/sweepyoface/schlog?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sweepyoface/schlog&amp;utm_campaign=Badge_Grade)
 [![Codacy branch coverage](https://img.shields.io/codacy/coverage/cd83f435087041ccb72ca9be1a0cf9dc/master.svg?logo=codacy)](https://www.codacy.com/app/sweepyoface/schlog?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sweepyoface/schlog&amp;utm_campaign=Badge_Coverage)
+[![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/sweepyoface/schlog.svg?logo=snyk)](https://snyk.io/test/github/sweepyoface/schlog?targetFile=package.json)
 
 ## Installation
 Install using [yarn](https://yarnpkg.com/en/package/jest):
